@@ -6,42 +6,18 @@ Create Spring Boot API that allows uploading and serving files.
 
 1. Clone this project and change the Database configuration with your own connection string in the following file:
         
-    *application.yml*:
-    ``` yaml
-    spring:
-      data:
-        mongodb:
-          uri: mongodb+srv://<username>:<password>@ieti-dzkk5.mongodb.net/test?retryWrites=true&w=majority 
-    ```
-
-*Note:* Don't forget to add your IP address in the IP Whitelist of your MongoDb Atlas cluster before attempting to run your application. 
+**Done**
 
 2. Run the project.
 
 3. Go to your database and verify that the file was created under a fs.files and fs.chunks documents. 
 
-4. Go to the *RESTController* class and inject the *GridFsTemplate* bean by using the *@Autowired* annotation.
+![](Img/Database.PNG)
 
-5. Implement the *getFileByName* method:
-
-    * Find the file with the following code:
-        ````Java
-          GridFSFile file = gridFsTemplate.findOne(new Query().addCriteria(Criteria.where("filename").is(filename)));
-        ````
-    * If the file does not exist return a Not Found HTTP status response:
-    
-        ````Java
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        ````
-    * If the file exist return the resource:
-        ````Java
-                GridFsResource resource = gridFsTemplate.getResource(file.getFilename());
-                return ResponseEntity.ok()
-                    .contentType(MediaType.valueOf(resource.getContentType()))
-                    .body(new InputStreamResource(resource.getInputStream()));
-        ````    
-    
+  
 5. Verify that the *getFileByName* endpoint works and it does returns the *lion.jpeg* file created on step 2 when requested by name.
+
+![](Img/Lions1.PNG)
 
 
 6. Implement the *handleFileUpload* method. Make sure you return the static url to access the uploaded file by using the *getFileByName* endpoint.
@@ -53,42 +29,13 @@ Create Spring Boot API that allows uploading and serving files.
 
 ## Part 2: Integrate file uploader with React JS project
 
-1. Using the TODO List application implemented in previous labs, add the following input to the Todo form:
-
-    ````Javascript
-        <input type="file" id="file" onChange={this.handleInputChange}/>
-    ````
-    
-2. Implement and bind the *handleInputChange* method:
-
-    ````Javascript
-         handleInputChange(e) {
-                this.setState({
-                    file: e.target.files[0]
-                });                
-            }
-    ````
-
-3. Change the *handleSubmit* method so it uploads the file first:
-
-    ````Javascript
-    
-            let data = new FormData();
-            data.append('file', this.state.file);
-    
-            this.axios.post('files', data)
-                .then(function (response) {
-                    console.log("file uploaded!", data);
-            })
-            .catch(function (error) {
-                console.log("failed file upload", error);
-            });
-    
-    ```` 
-4. Run your React project and verify that the file uploader works.
-
+**Done**
 
 ## Part 3: Upgrade your Todo to accept files
+
+**I couldn't do it, the previous version of the front uses Jwt to authenticate, 
+this version of the back doesn't use that, additionally it completely changes the structure of the project
+ and I didn't have time this week to implement everything again**
 
 1. Inject the *TodoRepository* into the *RESTController* using *@Autowired* annotation.
 
